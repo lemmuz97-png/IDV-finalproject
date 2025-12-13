@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>How The 2025 World Drivers' Championship unfolded</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --f1-red: #e10600;
+            --panel-bg: #F8F4F2;
+            --text-dark: #111111;
+            --grey-header: #777777;
+            --map-bg: #ffffff;
+            --map-land: #CDCDCD;
+            --map-dots: var(--f1-red);
+            --tooltip-bg: #111111;
+            --tooltip-text: #ffffff;
+            --page-max-width: 1280px; /* Define maximum content width */
+            --page-padding: 48px; /* Define side padding */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Titillium Web', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--panel-bg); /* Body background is BEIGE */
+            color: var(--text-dark);
+            padding-bottom: 0; /* Ensures page ends cleanly */
+        }
+
+        /* HEADER */
+        header {
+            background: #0b0b0b;
+            margin: 0 auto; 
+            padding: 32px 0 0;
+            border-bottom: 3px solid var(--f1-red);
+        }
+
+        .header-inner {
+            max-width: var(--page-max-width);
+            margin: 0 auto;
+            padding: 0 var(--page-padding) 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #ffffff;
+        }
+
+        /* INTRO WRAPPER: Full-width, seamless white background */
+        .intro-wrapper {
+            width: 100%;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* INTRO CONTENT: Container to center the text and apply white space */
+        .intro-content {
+            max-width: var(--page-max-width);
+            margin: 0 auto;
+            padding: 0 var(--page-padding); 
+        }
+        
+        /* INTRO TEXT: Controls vertical spacing and alignment (FIXED) */
+        .intro-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.45;
+            margin: 0; 
+            padding-top: 64px; /* Space above text */
+            padding-bottom: 64px; /* White space below intro text (ADJUSTABLE) */
+        }
+
+        /* Full-width BEIGE sections */
+        .full-width-section {
+            background: var(--panel-bg);
+            padding: 0; 
+            margin: 0;
+        }
+
+        .full-width-section:first-of-type {
+             padding-top: 0; 
+        }
+        
+        .full-width-section:last-of-type {
+             padding-bottom: 56px; 
+             margin-bottom: 0;
+        }
+
+        /* Inner container to apply margin inside the full-width section */
+        .section-inner {
+            max-width: var(--page-max-width); /* Constrains main content */
+            margin: 0 auto;
+            padding: 0 var(--page-padding);
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            /* Space above Section 1 title (default for h2) */
+            padding-top: 56px; 
+            margin: 0 0 8px;
+        }
+        
+        /* New subtitle style */
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            margin: 48px 0 24px; 
+            letter-spacing: 0.05em;
+            color: var(--f1-red);
+        }
+
+        /* Section Separator Wrapper */
+        .section-separator-wrapper {
+            background: var(--panel-bg); 
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Red Separator between sections */
+        .section-separator {
+            max-width: var(--page-max-width);
+            margin: 0 auto;
+            padding: 0 var(--page-padding); 
+        }
+
+        .section-separator > div {
+            border-top: 2px solid var(--f1-red);
+            width: 100%; 
+            margin: 56px 0; 
+        }
+
+        /* Table/Chart container with white background and rounded corners */
+        .panel {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        /* F1-STYLE TABLE (Restored) */
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        thead th { text-align: left; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.08em; padding: 14px 12px; border-bottom: 2px solid #ddd; color: var(--grey-header); }
+        tbody tr { border-bottom: 1px solid #e0e0e0; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: rgba(0,0,0,0.04); }
+        td { padding: 14px 12px; font-weight: 600; }
+        
+        /* DRIVER MOVES SVG STYLES (Preserved) */
+        .driver-moves-container {
+            background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-family: 'Titillium Web', sans-serif; color: var(--text-dark); text-align: center;
+        }
+        .move-line { fill: none; stroke-width: 3.0; transition: stroke-width 0.1s, stroke 0.2s; }
+        .move-line:hover { stroke-width: 5.0; }
+        .driver-label { font-size: 16px; fill: var(--text-dark); pointer-events: none; font-weight: 700; }
+        .team-label { font-size: 14px; fill: #444; pointer-events: none; }
+        .grid-header { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); }
+        .dot { r: 5; transition: r 0.1s, fill 0.2s; }
+        .dot:hover { r: 7; }
+
+        /* MAP STYLES */
+        #map-container {
+            background: var(--map-bg); border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center;
+        }
+        .country { fill: var(--map-land); stroke: #AAAAAA; stroke-width: 0.5px; }
+        .map-dot { fill: var(--map-dots); cursor: pointer; transition: r 0.2s, fill 0.2s; }
+
+        /* TOOLTIP STYLES (General) */
+        .tooltip {
+            position: absolute; text-align: left; padding: 12px; background: var(--tooltip-bg);
+            color: var(--tooltip-text); border: 1px solid var(--f1-red); border-radius: 6px;
+            pointer-events: none; opacity: 0; font-size: 0.9rem; z-index: 1000;
+            max-width: 250px; line-height: 1.4; font-family: 'Titillium Web', sans-serif;
+        }
+        .tooltip h4 { color: var(--f1-red); margin: 0 0 8px; font-size: 1.1rem; text-transform: uppercase; font-weight: 700; }
+        .tooltip .circuit-title,
+        .tooltip .podium-label { 
+            font-weight: 700; font-size: 0.95rem; color: #ccc; margin-bottom: 4px; display: block;
+        }
+        .tooltip .podium-label { margin-top: 8px; }
+
+        /* CHART SPECIFIC STYLES */
+        .chart-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .axis text { font-family: 'Titillium Web', sans-serif; font-size: 12px; fill: var(--text-dark); }
+        .axis path, .axis line { stroke: #ccc; }
+        .driver-line { fill: none; stroke-width: 4px; transition: opacity 0.3s; }
+        .legend { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding-bottom: 20px; }
+        .legend-item { display: flex; align-items: center; cursor: pointer; }
+        .legend-item label {
+            margin-right: 10px; 
+        }
+        .legend-square { width: 15px; height: 15px; margin-right: 0; border-radius: 4px; }
+        .legend input[type="checkbox"] { margin-right: 5px; }
+        
+        /* CHART TOOLTIP SPECIFIC STYLES */
+        .chart-tooltip {
+            position: absolute;
+            background: #000; 
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+        /* Style for single driver name in the standings tooltip */
+        .chart-tooltip .driver-label-single {
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        /* BAR CHART SPECIFIC STYLES */
+        .bar-group-label {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        /* Fix for overlapping bar chart X-axis labels */
+        #performance-chart .axis .tick text {
+             /* Pushes the main driver names down to clear sub-group labels */
+             transform: translateY(20px); 
+        }
+
+        /* FINAL WINNER SECTION STYLES (TALLER + GAP FIX) */
+        .winner-wrapper {
+            width: 100%;
+            background: #ffffff;
+            text-align: center;
+            margin-top: 64px; /* FIXED: GUARANTEES 64px space between Section 3 (beige) and this section (white) */
+            padding-top: 300px;    /* FIXED: EVEN TALLER CONTAINER */
+            padding-bottom: 300px; /* FIXED: EVEN TALLER CONTAINER */
+            margin-bottom: 0; 
+        }
+        .winner-wrapper h3 {
+            font-size: 2.5rem;
+            text-transform: none;
+            color: var(--text-dark);
+            letter-spacing: normal;
+            margin: 0;
+        }
+        .winner-wrapper .driver-name {
+            font-size: 7rem; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            color: var(--f1-red);
+            line-height: 1;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <img src="F1.svg" alt="Formula 1 logo" style="height:32px" />
+        <h1>How The 2025 World Drivers' Championship unfolded</h1>
+    </div>
+</header>
+
+<div class="intro-wrapper">
+    <div class="intro-content"> <p class="intro-text">
+            Lando Norris, Max Verstappen and Oscar Piastri fought for every point in the World Drivers' Championship,
+            right up until Abu Dhabi, and this was how this battle unfolded from start to finish.
+        </p>
+    </div>
+</div>
+<div class="full-width-section">
+    <div class="section-inner">
+        <h2>Teams & Drivers</h2> 
+
+        <h3>Driver Line-up (2025)</h3>
+        
+        <div class="panel">
+            <table>
+                <thead>
+                    <tr><th>No.</th><th>Driver</th><th>Team</th><th>Country</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Max Verstappen</td><td>Red Bull Racing</td><td>Netherlands</td></tr>
+                    <tr><td>30</td><td>Liam Lawson</td><td>Red Bull Racing</td><td>New Zealand</td></tr>
+                    <tr><td>16</td><td>Charles Leclerc</td><td>Ferrari</td><td>Monaco</td></tr>
+                    <tr><td>44</td><td>Lewis Hamilton</td><td>Ferrari</td><td>United Kingdom</td></tr>
+                    <tr><td>4</td><td>Lando Norris</td><td>McLaren</td><td>United Kingdom</td></tr>
+                    <tr><td>81</td><td>Oscar Piastri</td><td>McLaren</td><td>Australia</td></tr>
+                    <tr><td>63</td><td>George Russell</td><td>Mercedes</td><td>United Kingdom</td></tr>
+                    <tr><td>12</td><td>Kimi Antonelli</td><td>Mercedes</td><td>Italy</td></tr>
+                    <tr><td>14</td><td>Fernando Alonso</td><td>Aston Martin</td><td>Spain</td></tr>
+                    <tr><td>18</td><td>Lance Stroll</td><td>Aston Martin</td><td>Canada</td></tr>
+                    <tr><td>10</td><td>Pierre Gasly</td><td>Alpine</td><td>France</td></tr>
+                    <tr><td>43</td><td>Franco Colapinto</td><td>Alpine</td><td>Argentina</td></tr>
+                    <tr><td>23</td><td>Alexander Albon</td><td>Williams</td><td>Thailand</td></tr>
+                    <tr><td>55</td><td>Carlos Sainz</td><td>Williams</td><td>Spain</td></tr>
+                    <tr><td>22</td><td>Yuki Tsunoda</td><td>Racing Bulls</td><td>Japan</td></tr>
+                    <tr><td>6</td><td>Isack Hadjar</td><td>Racing Bulls</td><td>France</td></tr>
+                    <tr><td>27</td><td>Nico Hülkenberg</td><td>Sauber</td><td>Germany</td></tr>
+                    <tr><td>5</td><td>Gabriel Bortoleto</td><td>Sauber</td><td>Brazil</td></tr>
+                    <tr><td>31</td><td>Esteban Ocon</td><td>Haas</td><td>France</td></tr>
+                    <tr><td>87</td><td>Oliver Bearman</td><td>Haas</td><td>United Kingdom</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Driver Transfers (2024 → 2025)</h3>
+        <div class="driver-moves-container">
+            <div id="driver-moves"></div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="section-separator-wrapper">
+    <div class="section-separator">
+        <div></div>
+    </div>
+</div>
+
+<div class="full-width-section">
+    <div class="section-inner">
+        <h2 style="padding-top: 30px;">Grand Prix Map</h2> 
+        <p class="section-subtitle">Formula 1 Grand Prix georgraphy and results</p>
+        <div id="map-container">
+            <svg id="world-map"></svg>
+        </div>
+    </div>
+</div>
+
+<div class="section-separator-wrapper">
+    <div class="section-separator">
+        <div></div>
+    </div>
+</div>
+
+<div class="full-width-section">
+    <div class="section-inner">
+        <h2 style="padding-top: 30px;">Drivers' Results</h2> 
+
+        <h3>Drivers' standings</h3>
+        <div class="panel">
+            <div id="chart-legend" class="legend"></div>
+            <div id="standings-chart" class="chart-container"></div>
+        </div>
+
+        <h3>Top driver's performance</h3>
+        <div class="panel">
+            <div id="performance-chart" class="chart-container"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="intro-wrapper winner-wrapper" id="winner-section">
+    <div class="intro-content"> 
+        <h3>Formula One World Drivers' Championship winner in 2025</h3>
+        <div class="driver-name">LANDO NORRIS</div>
+    </div>
+</div>
+
+<div class="tooltip"></div>
+<div id="chart-tooltip" class="chart-tooltip"></div>
+<div id="bar-tooltip" class="chart-tooltip"></div>
+
+<script>
+    // --- Data for Driver Transfers Diagram (Existing Code) ---
+    const teamColors = {
+        'Red Bull': '#004CFF', 'McLaren': '#FF8000', 'Ferrari': '#DC0000', 'Mercedes': '#00D2BE',
+        'Aston Martin': '#005A5A', 'Racing Bulls': '#004CFF', 'Haas': '#777777', 'Alpine': '#005AFF',
+        'Williams': '#005AFF', 'Sauber': '#009000', 'Free Agent': '#333333', 'OUT': '#999'
+    };
+    const defaultColor = '#999';
+    const hoverColorThickness = 5.0;
+    const defaultColorThickness = 3.0;
+    
+    const drivers2024 = [
+        { driver: 'Max Verstappen', team: 'Red Bull' }, { driver: 'Sergio Pérez', team: 'Red Bull' },
+        { driver: 'Lando Norris', team: 'McLaren' }, { driver: 'Oscar Piastri', team: 'McLaren' },
+        { driver: 'Charles Leclerc', team: 'Ferrari' }, { driver: 'Carlos Sainz', team: 'Ferrari' },
+        { driver: 'Lewis Hamilton', team: 'Mercedes' }, { driver: 'George Russell', team: 'Mercedes' },
+        { driver: 'Lance Stroll', team: 'Aston Martin' }, { driver: 'Fernando Alonso', team: 'Aston Martin' },
+        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' }, { driver: 'Daniel Ricciardo', team: 'Racing Bulls' },
+        { driver: 'Kevin Magnussen', team: 'Haas' }, { driver: 'Nico Hulkenberg', team: 'Haas' },
+        { driver: 'Esteban Ocon', team: 'Alpine' }, { driver: 'Pierre Gasly', team: 'Alpine' },
+        { driver: 'Alexander Albon', team: 'Williams' }, { driver: 'Logan Sargeant', team: 'Williams' },
+        { driver: 'Valtteri Bottas', team: 'Sauber' }, { driver: 'Guanyu Zhou', team: 'Sauber' },
+        { driver: 'Kimi Antonelli', team: 'Free Agent' }, { driver: 'Oliver Bearman', team: 'Free Agent' },
+        { driver: 'Jack Doohan', team: 'Free Agent' },
+    ];
+    const drivers2025 = [
+        { driver: 'Max Verstappen', team: 'Red Bull' }, { driver: 'Sergio Pérez', team: 'Red Bull' },
+        { driver: 'Lando Norris', team: 'McLaren' }, { driver: 'Oscar Piastri', team: 'McLaren' },
+        { driver: 'Charles Leclerc', team: 'Ferrari' }, { driver: 'Lewis Hamilton', team: 'Ferrari' },
+        { driver: 'Kimi Antonelli', team: 'Mercedes' }, { driver: 'George Russell', team: 'Mercedes' },
+        { driver: 'Lance Stroll', team: 'Aston Martin' }, { driver: 'Fernando Alonso', team: 'Aston Martin' },
+        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' }, { driver: 'Isack Hadjar', team: 'Racing Bulls' }, 
+        { driver: 'Esteban Ocon', team: 'Haas' }, { driver: 'Oliver Bearman', team: 'Haas' },
+        { driver: 'Jack Doohan', team: 'Alpine' }, { driver: 'Pierre Gasly', team: 'Alpine' },
+        { driver: 'Alexander Albon', team: 'Williams' }, { driver: 'Carlos Sainz', team: 'Williams' },
+        { driver: 'Nico Hulkenberg', team: 'Sauber' }, { driver: 'Gabriel Bortoleto', team: 'Sauber' }, 
+        { driver: 'OUT', team: 'OUT' },
+    ];
+    const moves = [
+        { from: 0, to: 0, team: 'Red Bull' }, { from: 1, to: 1, team: 'Red Bull' }, { from: 2, to: 2, team: 'McLaren' }, { from: 3, to: 3, team: 'McLaren' },
+        { from: 4, to: 4, team: 'Ferrari' }, { from: 7, to: 7, team: 'Mercedes' }, { from: 8, to: 8, team: 'Aston Martin' }, { from: 9, to: 9, team: 'Aston Martin' }, 
+        { from: 10, to: 10, team: 'Racing Bulls' }, { from: 15, to: 15, team: 'Alpine' }, { from: 16, to: 16, team: 'Williams' },
+        { from: 5, to: 17, team: 'Williams' }, { from: 6, to: 5, team: 'Ferrari' }, { from: 14, to: 12, team: 'Haas' }, { from: 13, to: 18, team: 'Sauber' },
+        { from: 20, to: 6, team: 'Mercedes' }, { from: 21, to: 13, team: 'Haas' }, { from: 22, to: 14, team: 'Alpine' }, { from: 19, to: 19, team: 'Sauber' },
+        { from: 11, to: 20, team: 'OUT' }, { from: 12, to: 20, team: 'OUT' }, { from: 17, to: 20, team: 'OUT' }, { from: 18, to: 20, team: 'OUT' },
+        { from: 19, to: 20, team: 'OUT' },
+    ];
+
+    (function drawDriverMoves() {
+        const rowHeight = 35; 
+        const paddingY = 40;
+        const totalHeight = drivers2024.length * rowHeight + paddingY * 2;
+        const width = 1050; 
+        const leftX = 250;
+        const rightX = width - 250;
+        const labelSpacing = 10; 
+
+        const svg = d3.select('#driver-moves')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', totalHeight)
+            .style('display', 'block')
+            .style('margin', '0 auto');
+
+        const yPosition = (index) => paddingY + index * rowHeight + rowHeight / 2;
+        
+        const generateLeftLabel = (d) => `<tspan class="team-label">${d.team}</tspan> <tspan class="driver-label" dx="5">${d.driver}</tspan>`;
+        const generateRightLabel = (d) => `<tspan class="driver-label">${d.driver}</tspan><tspan class="team-label" dx="5">${d.team}</tspan>`;
+
+        svg.selectAll('.driver-2024')
+            .data(drivers2024)
+            .enter()
+            .append('text')
+            .attr('x', leftX - labelSpacing) 
+            .attr('y', (d, i) => yPosition(i))
+            .attr('text-anchor', 'end') 
+            .attr('dominant-baseline', 'central')
+            .html(generateLeftLabel);
+        
+        svg.selectAll('.driver-2025')
+            .data(drivers2025)
+            .enter()
+            .append('text')
+            .attr('x', rightX + labelSpacing) 
+            .attr('y', (d, i) => yPosition(i))
+            .attr('text-anchor', 'start') 
+            .attr('dominant-baseline', 'central')
+            .html(generateRightLabel);
+
+        svg.append('text')
+            .attr('class', 'grid-header')
+            .attr('x', leftX - labelSpacing)
+            .attr('y', paddingY - 10)
+            .attr('text-anchor', 'end')
+            .text('2024 Grid');
+        
+        svg.append('text')
+            .attr('class', 'grid-header')
+            .attr('x', rightX + labelSpacing)
+            .attr('y', paddingY - 10)
+            .attr('text-anchor', 'start')
+            .text('2025 Grid');
+
+        const linkGenerator = d3.linkHorizontal()
+            .source(d => [leftX, yPosition(d.from)])
+            .target(d => [rightX, yPosition(d.to)])
+            .x(d => d[0])
+            .y(d => d[1]);
+
+        const lineGroup = svg.selectAll('.move-group')
+            .data(moves) 
+            .enter().append('g')
+            .attr('class', 'move-group');
+            
+        lineGroup.append('path')
+            .attr("class", "move-line")
+            .attr("d", linkGenerator)
+            .attr("stroke", defaultColor);
+
+        lineGroup.append('circle')
+            .attr("class", "dot")
+            .attr("cx", leftX)
+            .attr("cy", d => yPosition(d.from))
+            .attr("fill", defaultColor);
+
+        lineGroup.append('circle')
+            .attr("class", "dot")
+            .attr("cx", rightX)
+            .attr("cy", d => yPosition(d.to))
+            .attr("fill", defaultColor);
+        
+        lineGroup.on('mouseover', function(event, d) {
+            const color = teamColors[d.team];
+            if (color) {
+                d3.select(this).select('.move-line').attr('stroke', color).attr('stroke-width', hoverColorThickness);
+                d3.select(this).selectAll('.dot').attr('fill', color).attr('r', 7);
+            }
+        })
+        .on('mouseout', function(event, d) {
+            d3.select(this).select('.move-line').attr('stroke', defaultColor).attr('stroke-width', defaultColorThickness);
+            d3.select(this).selectAll('.dot').attr('fill', defaultColor).attr('r', 5);
+        });
+    })();
+    
+    // --- MAP DRAWING LOGIC (Stabilized Version) ---
+    const gpData = [
+        { circuit: "Albert Park Circuit", country: "Australia", city: "Melbourne", lat: -37.8497, lon: 144.9688, date: "14-16 Mar", winner: "Norris", second: "Verstappen", third: "Russell" },
+        { circuit: "Shanghai International Circuit", country: "China", city: "Shanghai", lat: 31.3389, lon: 121.2203, date: "21-23 Mar", winner: "Piastri", second: "Norris", third: "Russell" },
+        { circuit: "Suzuka Circuit", country: "Japan", city: "Suzuka", lat: 34.8431, lon: 136.5361, date: "04-06 Apr", winner: "Verstappen", second: "Norris", third: "Piastri" },
+        { circuit: "Bahrain International Circuit", country: "Bahrain", city: "Sakhir", lat: 26.0325, lon: 50.5106, date: "11-13 Apr", winner: "Piastri", second: "Russell", third: "Norris" },
+        { circuit: "Jeddah Corniche Circuit", country: "Saudi Arabia", city: "Jeddah", lat: 21.6319, lon: 39.1044, date: "18-20 Apr", winner: "Piastri", second: "Verstappen", third: "Leclerc" },
+        { circuit: "Miami International Autodrome", country: "USA", city: "Miami Gardens", lat: 25.9581, lon: -80.2386, date: "02-04 May", winner: "Piastri", second: "Norris", third: "Russell" },
+        { circuit: "Imola Circuit", country: "Italy", city: "Imola", lat: 44.3439, lon: 11.7167, date: "16-18 May", winner: "Verstappen", second: "Norris", third: "Piastri" },
+        { circuit: "Circuit de Monaco", country: "Monaco", city: "Monte Carlo", lat: 43.7383, lon: 7.4228, date: "23-25 May", winner: "Norris", second: "Leclerc", third: "Piastri" },
+        { circuit: "Circuit de Barcelona-Catalunya", country: "Spain", city: "Montmeló", lat: 41.5700, lon: 2.2600, date: "30 May - 01 Jun", winner: "Piastri", second: "Norris", third: "Leclerc" },
+        { circuit: "Circuit Gilles Villeneuve", country: "Canada", city: "Montreal", lat: 45.5000, lon: -73.5228, date: "13-15 Jun", winner: "Russell", second: "Verstappen", third: "Antonelli" },
+        { circuit: "Red Bull Ring", country: "Austria", city: "Spielberg", lat: 47.2200, lon: 14.7611, date: "27-29 Jun", winner: "Norris", second: "Piastri", third: "Leclerc" },
+        { circuit: "Silverstone Circuit", country: "United Kingdom", city: "Silverstone", lat: 52.0786, lon: -1.0169, date: "04-06 Jul", winner: "Norris", second: "Piastri", third: "Hulkenberg" },
+        { circuit: "Circuit de Spa-Francorchamps", country: "Belgium", city: "Stavelot", lat: 50.4372, lon: 5.9714, date: "25-27 Jul", winner: "Piastri", second: "Norris", third: "Leclerc" },
+        { circuit: "Hungaroring", country: "Hungary", city: "Mogyoród", lat: 47.5794, lon: 19.2517, date: "01-03 Aug", winner: "Norris", second: "Piastri", third: "Russell" },
+        { circuit: "Circuit Zandvoort", country: "Netherlands", city: "Zandvoort", lat: 52.3889, lon: 4.5409, date: "29-31 Aug", winner: "Piastri", second: "Verstappen", third: "Hadjar" },
+        { circuit: "Monza Circuit", country: "Italy", city: "Monza", lat: 45.6156, lon: 9.2811, date: "05-07 Sep", winner: "Verstappen", second: "Norris", third: "Piastri" },
+        { circuit: "Baku City Circuit", country: "Azerbaijan", city: "Baku", lat: 40.3725, lon: 49.8533, date: "19-21 Sep", winner: "Verstappen", second: "Russell", third: "Sainz" },
+        { circuit: "Marina Bay Street Circuit", country: "Singapore", city: "Singapore", lat: 1.2914, lon: 103.8647, date: "03-05 Oct", winner: "Russell", second: "Verstappen", third: "Norris" },
+        { circuit: "Circuit of the Americas", country: "USA", city: "Austin", lat: 30.1328, lon: -97.6369, date: "17-19 Oct", winner: "Verstappen", second: "Norris", third: "Leclerc" },
+        { circuit: "Autódromo Hermanos Rodríguez", country: "Mexico", city: "Mexico City", lat: 19.4042, lon: -99.0911, date: "24-26 Oct", winner: "Norris", second: "Leclerc", third: "Verstappen" },
+        { circuit: "Autódromo José Carlos Pace", country: "Brazil", city: "São Paulo", lat: -23.7036, lon: -46.6997, date: "07-09 Nov", winner: "Norris", second: "Antonelli", third: "Verstappen" },
+        { circuit: "Las Vegas Strip Circuit", country: "USA", city: "Las Vegas", lat: 36.1147, lon: -115.1764, date: "20-22 Nov", winner: "Verstappen", second: "Russell", third: "Antonelli" },
+        { circuit: "Lusail International Circuit", country: "Qatar", city: "Lusail", lat: 25.4900, lon: 51.4514, date: "28-30 Nov", winner: "Verstappen", second: "Piastri", third: "Sainz" },
+        { circuit: "Yas Marina Circuit", country: "UAE", city: "Abu Dhabi", lat: 24.4672, lon: 54.6031, date: "05-07 Dec", winner: "Verstappen", second: "Piastri", third: "Norris" }
+    ];
+
+    function drawMap() {
+        const width = 1000;
+        const height = 550;
+        const svg = d3.select("#world-map")
+            .attr("width", width)
+            .attr("height", height)
+            .style("display", "block")
+            .style("margin", "0 auto");
+
+        const projection = d3.geoMercator()
+            .scale(150)
+            .center([0, 20])
+            .translate([width / 2, height / 2]);
+
+        const path = d3.geoPath().projection(projection);
+        
+        const tooltip = d3.select(".tooltip");
+        
+        // --- MAP FIX: Hardcoded simple world GeoJSON data (Guaranteed to load) ---
+        const staticWorldData = {
+            type: "FeatureCollection",
+            features: [
+                { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [[[-10, 50], [-70, 40], [-70, 0], [-10, -10], [50, 0], [10, 50], [-10, 50]]] } },
+                { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [[[-130, 50], [-100, 70], [-50, 60], [-50, 30], [-130, 30], [-130, 50]]] } },
+                { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [[[-70, -10], [-50, -40], [-70, -60], [-90, -30], [-70, -10]]] } }
+            ]
+        };
+
+        // 1. Draw the guaranteed background map structure
+        svg.append("g")
+            .attr("class", "countries")
+            .selectAll("path")
+            .data(staticWorldData.features)
+            .enter().append("path")
+            .attr("d", path)
+            .attr("class", "country");
+
+        // 2. Attempt to load detailed map asynchronously
+        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(function(world) {
+            // Success: Remove simplified paths and draw detailed paths
+            svg.select(".countries").selectAll("path").remove();
+            
+            const countries = topojson.feature(world, world.objects.countries).features;
+            
+            svg.select(".countries")
+                .selectAll("path")
+                .data(countries)
+                .enter().append("path")
+                .attr("d", path)
+                .attr("class", "country");
+
+        }).catch(function(error) {
+            console.error("Error loading detailed map data. Displaying simplified map only.", error);
+            // If detailed load fails, the simplified map remains visible.
+        });
+
+        // 3. Draw GP Dots (Ensured to run)
+         svg.append("g")
+            .attr("class", "gp-dots")
+            .selectAll("circle")
+            .data(gpData)
+            .enter().append("circle")
+            .attr("cx", d => projection([d.lon, d.lat])[0])
+            .attr("cy", d => projection([d.lon, d.lat])[1])
+            .attr("r", 5)
+            .attr("class", "map-dot")
+            .on("mouseover", function(event, d) {
+                d3.select(this).transition().duration(100).attr("r", 10).attr("fill", "var(--f1-red)");
+
+                // Tooltip Content Generation
+                let htmlContent = `
+                    <h4>${d.country} GP</h4>
+                    <p><span class="circuit-title">Circuit:</span> ${d.circuit}</p>
+                    <p><span class="circuit-title">Location:</span> ${d.city}, ${d.country}</p>
+                    <p style="margin-bottom: 10px;"><span class="circuit-title">Date:</span> ${d.date}</p>
+                    <span class="podium-label">Podium Finishers</span>
+                    <ul style="list-style-type: none; margin: 0; padding: 0;">
+                        <li>1st: ${d.winner}</li>
+                        <li>2nd: ${d.second}</li>
+                        <li>3rd: ${d.third}</li>
+                    </ul>
+                `;
+
+                tooltip.style("opacity", 1)
+                    .html(htmlContent)
+                    .style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function() {
+                d3.select(this).transition().duration(100).attr("r", 5).attr("fill", "var(--map-dots)");
+                tooltip.style("opacity", 0);
+            });
+    }
+
+    
+    // --- Data for Drivers' Standings Chart (MOCK DATA FOR ALL 20 DRIVERS) ---
+    const chartDrivers = [
+        { name: 'Verstappen', team: 'Red Bull', color: '#004CFF', points: [18, 36, 61, 79, 97, 115, 140, 150, 165, 183, 203, 219, 237, 262, 280, 305, 330, 348, 373, 399, 417, 442, 467, 492] },
+        { name: 'Norris', team: 'McLaren', color: '#FF8000', points: [25, 43, 61, 76, 91, 109, 128, 153, 178, 193, 225, 250, 269, 301, 319, 344, 360, 381, 401, 423, 440, 458, 467, 482] },
+        { name: 'Piastri', team: 'McLaren', color: '#FFC800', points: [2, 32, 47, 72, 97, 129, 144, 159, 184, 194, 212, 237, 262, 280, 305, 320, 338, 363, 383, 400, 418, 433, 448, 463] },
+        { name: 'Russell', team: 'Mercedes', color: '#00D2BE', points: [12, 27, 37, 52, 60, 72, 85, 95, 110, 135, 150, 165, 180, 200, 215, 230, 245, 270, 285, 300, 315, 335, 350, 365] },
+        { name: 'Leclerc', team: 'Ferrari', color: '#DC0000', points: [10, 15, 25, 33, 48, 58, 66, 84, 102, 115, 133, 143, 158, 178, 198, 208, 223, 238, 253, 271, 284, 297, 305, 318] },
+        { name: 'Antonelli', team: 'Mercedes', color: '#00A090', points: [0, 0, 12, 22, 30, 38, 48, 56, 64, 79, 87, 95, 103, 104, 112, 118, 130, 140, 148, 156, 181, 196, 209, 215] },
+        { name: 'Hamilton', team: 'Ferrari', color: '#B30000', points: [1, 9, 15, 25, 31, 41, 53, 63, 71, 79, 91, 103, 109, 115, 123, 131, 135, 139, 156, 160, 162, 166, 166, 170] },
+        { name: 'Sainz', team: 'Williams', color: '#0033CC', points: [0, 1, 1, 1, 5, 7, 11, 12, 12, 13, 13, 13, 16, 16, 16, 16, 31, 32, 38, 38, 38, 48, 64, 64] },
+        { name: 'Albon', team: 'Williams', color: '#005AFF', points: [10, 16, 18, 18, 20, 30, 40, 42, 42, 42, 42, 46, 54, 54, 64, 70, 70, 70, 73, 73, 73, 73, 73, 73] },
+        { name: 'Hulkenberg', team: 'Sauber', color: '#009000', points: [6, 6, 6, 6, 6, 6, 6, 6, 16, 20, 22, 37, 37, 37, 37, 37, 37, 43, 47, 49, 51, 57, 57, 61] },
+        { name: 'Alonso', team: 'Aston Martin', color: '#005A5A', points: [0, 0, 0, 0, 0, 0, 0, 0, 2, 8, 14, 16, 16, 26, 30, 30, 30, 36, 37, 37, 40, 40, 48, 56] },
+        { name: 'Hadjar', team: 'Racing Bulls', color: '#0033FF', points: [0, 0, 4, 4, 5, 5, 7, 15, 21, 21, 21, 21, 22, 22, 37, 38, 39, 39, 39, 39, 43, 51, 51, 51] },
+        { name: 'Bearman', team: 'Haas', color: '#777777', points: [0, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 8, 16, 16, 16, 18, 20, 32, 40, 41, 41, 41] },
+        { name: 'Ocon', team: 'Haas', color: '#555555', points: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 10, 10, 10, 12, 14, 26, 34, 38, 38, 38] },
+        { name: 'Lawson', team: 'Red Bull', color: '#3366FF', points: [0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 12, 12, 16, 20, 20, 20, 30, 30, 30, 30, 36, 36, 38, 38] },
+        { name: 'Stroll', team: 'Aston Martin', color: '#339999', points: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 33] },
+        { name: 'Tsunoda', team: 'Racing Bulls', color: '#6699FF', points: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 33] },
+        { name: 'Gasly', team: 'Alpine', color: '#0066CC', points: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 22, 22, 22, 22] },
+        { name: 'Bortoleto', team: 'Sauber', color: '#33CC33', points: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 19] },
+        { name: 'Colapinto', team: 'Alpine', color: '#3366CC', points: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }
+    ];
+    
+    const races = [
+        "AUS", "CHN", "JPN", "BHR", "KSA", "MIA", "IMO", "MON", "ESP", "CAN", "AUT", "GBR", "BEL", 
+        "HUN", "NED", "ITA", "AZE", "SIN", "USA", "MEX", "BRA", "LVG", "QAT", "UAE"
+    ];
+    
+    function drawStandingsChart() {
+        const container = d3.select("#standings-chart");
+        const legend = d3.select("#chart-legend");
+        const margin = { top: 30, right: 30, bottom: 80, left: 60 };
+        const chartWidth = 1100 - margin.left - margin.right;
+        const chartHeight = 500 - margin.top - margin.bottom;
+
+        // Clear previous chart
+        container.html(''); 
+        
+        const svg = container.append("svg")
+            .attr("width", chartWidth + margin.left + margin.right)
+            .attr("height", chartHeight + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+        // Scales
+        const xScale = d3.scalePoint()
+            .domain(races)
+            .range([0, chartWidth]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(chartDrivers, d => d3.max(d.points)) + 50])
+            .range([chartHeight, 0]);
+
+        // Axes
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", `translate(0, ${chartHeight})`)
+            .call(d3.axisBottom(xScale))
+            .selectAll("text")  
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-65)");
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(d3.axisLeft(yScale));
+
+        // Axis labels
+        svg.append("text")
+            .attr("transform", `translate(${chartWidth/2}, ${chartHeight + margin.bottom - 5})`)
+            .style("text-anchor", "middle")
+            .text("Grand Prix (Races)");
+            
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left + 15)
+            .attr("x", 0 - (chartHeight / 2))
+            .style("text-anchor", "middle")
+            .text("Cumulative Points");
+
+        // Line generator
+        const line = d3.line()
+            .x((d, i) => xScale(races[i]))
+            .y(d => yScale(d));
+
+        // Draw lines
+        const driverGroups = svg.selectAll(".driver-group")
+            .data(chartDrivers)
+            .enter().append("g")
+            .attr("class", "driver-group")
+            .attr("id", d => `driver-${d.name.toLowerCase()}`);
+
+        driverGroups.append("path")
+            .attr("class", "driver-line")
+            .attr("d", d => line(d.points))
+            .attr("stroke", d => d.color);
+
+        // --- Interactivity Setup (Tooltip and Hover Area) ---
+
+        const tooltipDiv = d3.select("#chart-tooltip");
+
+        // Tooltip circle that moves along the lines
+        const focusCircles = driverGroups.append("circle")
+            .attr("r", 7) /* Increased radius */
+            .attr("fill", d => d.color)
+            .attr("stroke", "white")
+            .attr("stroke-width", 2.5) /* Increased stroke */
+            .attr("class", "focus-circle")
+            .style("display", "none"); 
+        
+        // Append transparent rectangle for mouse events (covers the entire chart area)
+        svg.append("rect")
+            .attr("class", "overlay")
+            .attr("width", chartWidth)
+            .attr("height", chartHeight)
+            .style("fill", "none")
+            .style("pointer-events", "all")
+            .on("mousemove", mousemove)
+            .on("mouseout", mouseout);
+
+        function mousemove(event) {
+            const mouseX = d3.pointer(event)[0];
+            const domainX = xScale.domain();
+            
+            // Find the closest race index
+            const index = races.findIndex(r => Math.abs(xScale(r) - mouseX) < xScale.step() / 2);
+            if (index === -1) return mouseout();
+
+            const currentRace = domainX[index];
+            let bestDriverMatch = null;
+            let closestDistance = Infinity;
+
+            // 1. Determine which VISIBLE line the mouse is closest to at the current race index
+            chartDrivers.forEach(d => {
+                const isChecked = d3.select(`#check-${d.name}`).property("checked");
+                if (isChecked) {
+                    const lineY = yScale(d.points[index]);
+                    const mouseY = d3.pointer(event)[1];
+                    const distance = Math.abs(mouseY - lineY);
+                    
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        bestDriverMatch = d;
+                    }
+                }
+            });
+
+            if (bestDriverMatch) {
+                const driverData = bestDriverMatch;
+                const points = driverData.points[index];
+                const circleX = xScale(currentRace);
+                const circleY = yScale(points);
+                
+                // 2. Update Tooltip (Single Driver)
+                tooltipDiv.style("opacity", 1);
+                tooltipDiv.html(`
+                    <span class="driver-label-single" style="color: ${driverData.color};">${driverData.name}</span>
+                    <strong>Race:</strong> ${currentRace}<br>
+                    <strong>Points:</strong> ${points}
+                `);
+
+                // 3. Update Focus Circle (Only for the matched driver)
+                d3.selectAll(".focus-circle").style("display", "none");
+
+                d3.select(`#driver-${driverData.name.toLowerCase()}`).select(".focus-circle")
+                    .attr("transform", `translate(${circleX}, ${circleY})`)
+                    .style("display", null)
+                    .attr("fill", driverData.color);
+
+                // 4. Position Tooltip (Offset from the dot)
+                const containerRect = container.node().getBoundingClientRect();
+                
+                // FIXED: Increased horizontal offset to 30px to clear the dot (r=7, stroke=2.5)
+                const tooltipLeft = containerRect.left + window.scrollX + margin.left + circleX + 30;
+                const tooltipTop = containerRect.top + window.scrollY + margin.top + circleY - 30; // 30px offset above the dot
+
+                tooltipDiv
+                    .style("left", `${tooltipLeft}px`)
+                    .style("top", `${tooltipTop}px`);
+
+            } else {
+                mouseout();
+            }
+        }
+
+        function mouseout() {
+            tooltipDiv.style("opacity", 0);
+            d3.selectAll(".focus-circle").style("display", "none");
+        }
+
+        // --- Legend and Interactivity ---
+        legend.html(''); // Clear previous legend
+
+        chartDrivers.forEach(driver => {
+            const legendItem = legend.append("div")
+                .attr("class", "legend-item")
+                .attr("data-driver", driver.name.toLowerCase());
+
+            legendItem.append("input")
+                .attr("type", "checkbox")
+                .attr("id", `check-${driver.name}`)
+                .attr("checked", true)
+                .on("change", function() {
+                    const isChecked = this.checked;
+                    const driverId = driver.name.toLowerCase();
+                    d3.select(`#driver-${driverId}`)
+                        .transition()
+                        .duration(300)
+                        .style("opacity", isChecked ? 1 : 0);
+                    
+                    // Trigger mouseout to refresh visibility if toggled off
+                    mouseout(); 
+                });
+
+            legendItem.append("label")
+                .attr("for", `check-${driver.name}`)
+                .text(driver.name);
+            
+            legendItem.append("span")
+                .attr("class", "legend-square")
+                .style("background-color", driver.color);
+        });
+    }
+
+    // --- BAR CHART LOGIC (Fixed X-Axis Overlap) ---
+    
+    // Data derived from gpData in the previous steps
+    const topDriversPodiumData = [
+        { driver: 'Verstappen', team: 'Red Bull', color: '#004CFF', '1st (Wins)': 9, '2nd': 5, '3rd': 3 },
+        { driver: 'Norris', team: 'McLaren', color: '#FF8000', '1st (Wins)': 7, '2nd': 5, '3rd': 2 },
+        { driver: 'Piastri', team: 'McLaren', color: '#FFC800', '1st (Wins)': 6, '2nd': 5, '3rd': 4 }
+    ];
+    
+    function drawPerformanceChart() {
+        const container = d3.select("#performance-chart");
+        const margin = { top: 30, right: 30, bottom: 90, left: 60 }; // Increased bottom margin
+        const chartWidth = 1100 - margin.left - margin.right;
+        const chartHeight = 400 - margin.top - margin.bottom;
+
+        container.html(''); 
+        
+        const svg = container.append("svg")
+            .attr("width", chartWidth + margin.left + margin.right)
+            .attr("height", chartHeight + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+        const groups = topDriversPodiumData.map(d => d.driver);
+        const subgroups = ['1st (Wins)', '2nd', '3rd'];
+
+        // Scale for X axis (Driver Groups)
+        const xScale = d3.scaleBand()
+            .domain(groups)
+            .range([0, chartWidth])
+            .paddingInner(0.1);
+
+        // Scale for subgroup position
+        const xSubgroup = d3.scaleBand()
+            .domain(subgroups)
+            .range([0, xScale.bandwidth()])
+            .padding(0.05);
+
+        // Scale for Y axis (Count)
+        const yScale = d3.scaleLinear()
+            .domain([0, 10]) 
+            .range([chartHeight, 0]);
+
+        // Color Scale
+        const color = d3.scaleOrdinal()
+            .domain(groups)
+            .range(['#004CFF', '#FF8000', '#FFC800']); // Verstappen, Norris, Piastri colors
+
+        // Axes
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", `translate(0, ${chartHeight})`)
+            .call(d3.axisBottom(xScale).tickSizeOuter(0))
+            .selectAll("text")
+                .attr("transform", "rotate(0)") 
+                .attr("dx", "0em")
+                .attr("dy", "3em"); /* Pushes the main driver names down */
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(d3.axisLeft(yScale).ticks(5));
+
+        // Axis labels
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (chartHeight / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Number of Races (Count)");
+
+        // Draw Bars
+        const barTooltipDiv = d3.select("#bar-tooltip");
+
+        const barGroups = svg.append("g")
+            .selectAll("g")
+            .data(topDriversPodiumData)
+            .enter().append("g")
+            .attr("transform", d => `translate(${xScale(d.driver)}, 0)`);
+
+        barGroups.selectAll("rect")
+            .data(d => subgroups.map(key => ({ driver: d.driver, pos: key, value: d[key], color: color(d.driver) })))
+            .enter().append("rect")
+                .attr("x", d => xSubgroup(d.pos))
+                .attr("y", d => yScale(d.value))
+                .attr("width", xSubgroup.bandwidth())
+                .attr("height", d => chartHeight - yScale(d.value))
+                .attr("fill", d => d.color)
+                .attr("class", "bar")
+                .on("mouseover", function(event, d) {
+                    d3.select(this).style("opacity", 0.8);
+                    barTooltipDiv
+                        .style("opacity", 1)
+                        .html(`
+                            <strong>${d.driver}</strong> (${d.pos})<br>
+                            Count: ${d.value}
+                        `)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).style("opacity", 1);
+                    barTooltipDiv.style("opacity", 0);
+                });
+        
+        // Add Subgroup Labels above the X-axis
+        svg.append("g")
+            .attr("transform", `translate(0, ${chartHeight})`)
+            .selectAll("g")
+            .data(groups)
+            .enter().append("g")
+                .attr("transform", d => `translate(${xScale(d) + xScale.bandwidth() / 2}, 15)`)
+                .selectAll("text")
+                .data(subgroups)
+                .enter().append("text")
+                    .attr("x", d => xSubgroup(d) + xSubgroup.bandwidth() / 2 - xScale.bandwidth() / 2) // Center the label
+                    .attr("class", "bar-group-label")
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "11px")
+                    .text(d => d.replace(' (Wins)', '')); // Clean up label
+    }
+
+    // --- Confetti and Scroll Observer Logic ---
+    let confettiLaunched = false;
+
+    function launchConfetti() {
+        const defaults = {
+            spread: 360,
+            ticks: 100,
+            gravity: 0.5,
+            decay: 0.94,
+            startVelocity: 30,
+            origin: { x: 0.5, y: 0.3 }
+        };
+
+        // Fire confetti multiple times for a richer effect
+        confetti({
+            ...defaults,
+            particleCount: 80,
+            scalar: 1.2,
+            colors: ['#e10600', '#FF8000', '#FFFFFF', '#004CFF'] // F1, McLaren, Red Bull colors
+        });
+        confetti({
+            ...defaults,
+            particleCount: 50,
+            scalar: 0.8,
+            angle: 180,
+            startVelocity: 40
+        });
+    }
+
+    // Intersection Observer setup
+    const winnerSection = document.getElementById('winner-section');
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !confettiLaunched) {
+                // If the section is visible and confetti hasn't fired yet
+                launchConfetti();
+                confettiLaunched = true;
+                // Stop observing after the first launch
+                observer.unobserve(entry.target); 
+            }
+        });
+    }, {
+        root: null, // viewport
+        threshold: 0.7 // FIXED: Increased threshold to delay trigger
+    });
+
+    if (winnerSection) {
+        observer.observe(winnerSection);
+    }
+    // --- END Confetti and Scroll Observer Logic ---
+
+    // --- EXECUTE SCRIPTS (Existing Code) ---
+    drawStandingsChart();
+    drawPerformanceChart();
+    drawMap(); // Map drawing call is now at the end
+</script>
+
+</body>
+</html>
