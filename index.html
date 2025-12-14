@@ -318,12 +318,12 @@
                     <tr><td>12</td><td>Andrea Kimi Antonelli</td><td>Mercedes</td><td>Italy</td></tr>
                     <tr><td>14</td><td>Fernando Alonso</td><td>Aston Martin</td><td>Spain</td></tr>
                     <tr><td>18</td><td>Lance Stroll</td><td>Aston Martin</td><td>Canada</td></tr>
-                    <tr><td>22</td><td>Yuki Tsunoda</td><td>Racing Bulls</td><td>Japan</td></tr>
-                    <tr><td>6</td><td>Isack Hadjar</td><td>Racing Bulls</td><td>France</td></tr>
                     <tr><td>10</td><td>Pierre Gasly</td><td>Alpine</td><td>France</td></tr>
-                    <tr><td>61</td><td>Jack Doohan</td><td>Alpine</td><td>Australia</td></tr>
+                    <tr><td>43</td><td>Franco Colapinto</td><td>Alpine</td><td>Argentina</td></tr>
                     <tr><td>23</td><td>Alexander Albon</td><td>Williams</td><td>Thailand</td></tr>
                     <tr><td>55</td><td>Carlos Sainz</td><td>Williams</td><td>Spain</td></tr>
+                    <tr><td>22</td><td>Yuki Tsunoda</td><td>Racing Bulls</td><td>Japan</td></tr>
+                    <tr><td>6</td><td>Isack Hadjar</td><td>Racing Bulls</td><td>France</td></tr>
                     <tr><td>27</td><td>Nico Hülkenberg</td><td>Sauber</td><td>Germany</td></tr>
                     <tr><td>5</td><td>Gabriel Bortoleto</td><td>Sauber</td><td>Brazil</td></tr>
                     <tr><td>87</td><td>Oliver Bearman</td><td>Haas</td><td>United Kingdom</td></tr>
@@ -414,7 +414,7 @@
         { driver: 'George Russell', team: 'Mercedes' }, // Index 7
         { driver: 'Lance Stroll', team: 'Aston Martin' },// Index 8
         { driver: 'Fernando Alonso', team: 'Aston Martin' },// Index 9
-        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' },// Index 10 (to Red Bull)
+        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' },// Index 10 (to Racing Bulls)
         { driver: 'Daniel Ricciardo', team: 'Racing Bulls' },// Index 11 (OUT)
         { driver: 'Kevin Magnussen', team: 'Haas' },    // Index 12 (OUT)
         { driver: 'Nico Hulkenberg', team: 'Haas' },    // Index 13 (to Sauber)
@@ -427,7 +427,7 @@
         { driver: 'Liam Lawson', team: 'Free Agent' },  // Index 20 (Promoted to RB)
         { driver: 'Andrea Kimi Antonelli', team: 'Free Agent' },// Index 21 (Rookie to Mercedes)
         { driver: 'Oliver Bearman', team: 'Free Agent' }, // Index 22 (Rookie to Haas)
-        { driver: 'Jack Doohan', team: 'Free Agent' },  // Index 23 (Rookie to Alpine)
+        { driver: 'Jack Doohan', team: 'Free Agent' },  // Index 23 (OUT)
         { driver: 'Isack Hadjar', team: 'Free Agent' }, // Index 24 (Rookie to RB)
         { driver: 'Gabriel Bortoleto', team: 'Free Agent' }, // Index 25 (Rookie to Sauber)
         { driver: 'Franco Colapinto', team: 'Free Agent' } // Index 26 (Rookie to Alpine)
@@ -444,10 +444,10 @@
         { driver: 'Andrea Kimi Antonelli', team: 'Mercedes' }, // Index 7 (Rookie)
         { driver: 'Fernando Alonso', team: 'Aston Martin' }, // Index 8
         { driver: 'Lance Stroll', team: 'Aston Martin' },   // Index 9
-        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' },   // Index 10 (From Red Bull)
+        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' },   // Index 10 (From Racing Bulls)
         { driver: 'Isack Hadjar', team: 'Racing Bulls' },   // Index 11 (Rookie)
         { driver: 'Pierre Gasly', team: 'Alpine' },         // Index 12
-        { driver: 'Jack Doohan', team: 'Alpine' },          // Index 13 (Rookie)
+        { driver: 'Franco Colapinto', team: 'Alpine' },     // Index 13 (Rookie, FIXED)
         { driver: 'Alexander Albon', team: 'Williams' },    // Index 14
         { driver: 'Carlos Sainz', team: 'Williams' },       // Index 15 (From Ferrari)
         { driver: 'Nico Hülkenberg', team: 'Sauber' },      // Index 16 (From Haas)
@@ -459,8 +459,8 @@
         { driver: 'Kevin Magnussen', team: 'OUT' },         // Index 22
         { driver: 'Logan Sargeant', team: 'OUT' },          // Index 23
         { driver: 'Valtteri Bottas', team: 'OUT' },         // Index 24
-        { driver: 'Guanyu Zhou', team: 'OUT' }              // Index 25
-        // Removed Franco Colapinto to match the standard 20 drivers + OUTs list size in the current code setup, and ensured the transfer lines are clean.
+        { driver: 'Guanyu Zhou', team: 'OUT' },             // Index 25
+        { driver: 'Jack Doohan', team: 'OUT' }              // Index 26
     ];
 
     // Mapped indices for moves based on the correct 2024 and 2025 lists above
@@ -477,7 +477,7 @@
         { from: 16, to: 14, team: 'Williams' },     // Albon (WIL -> WIL)
 
         // TRANSFERS & ROOKIES
-        { from: 10, to: 10, team: 'Racing Bulls' }, // Tsunoda (RB -> RB)
+        { from: 10, to: 10, team: 'Racing Bulls' }, // Tsunoda (RB -> RB) - Stays in the Racing Bulls system
         { from: 20, to: 1, team: 'Red Bull' },      // Lawson (FA -> RB)
         { from: 6, to: 3, team: 'Ferrari' },        // Hamilton (MER -> FER)
         { from: 5, to: 15, team: 'Williams' },      // Sainz (FER -> WIL)
@@ -485,7 +485,7 @@
         { from: 14, to: 19, team: 'Haas' },         // Ocon (ALP -> HAA)
         { from: 21, to: 7, team: 'Mercedes' },      // Antonelli (FA -> MER)
         { from: 22, to: 18, team: 'Haas' },         // Bearman (FA -> HAA)
-        { from: 23, to: 13, team: 'Alpine' },       // Doohan (FA -> ALP)
+        { from: 26, to: 13, team: 'Alpine' },       // Colapinto (FA -> ALP) - FIXED: Colapinto to Alpine
         { from: 24, to: 11, team: 'Racing Bulls' }, // Hadjar (FA -> RB)
         { from: 25, to: 17, team: 'Sauber' },       // Bortoleto (FA -> SAU)
         
@@ -495,8 +495,8 @@
         { from: 12, to: 22, team: 'OUT' },  // Magnussen
         { from: 17, to: 23, team: 'OUT' },  // Sargeant
         { from: 18, to: 24, team: 'OUT' },  // Bottas
-        { from: 19, to: 25, team: 'OUT' }   // Zhou
-        // Colapinto removed from list for size consistency
+        { from: 19, to: 25, team: 'OUT' },  // Zhou
+        { from: 23, to: 26, team: 'OUT' }   // Doohan
     ];
 
 
@@ -893,7 +893,7 @@
                 // 4. Position Tooltip (Offset from the dot)
                 const containerRect = container.node().getBoundingClientRect();
                 
-                // FIXED: Increased horizontal offset to 40px to ensure clearance
+                // Increased horizontal offset to 40px to ensure clearance
                 const tooltipLeft = containerRect.left + window.scrollX + margin.left + circleX + 40;
                 const tooltipTop = containerRect.top + window.scrollY + margin.top + circleY - 30; // 30px offset above the dot
 
