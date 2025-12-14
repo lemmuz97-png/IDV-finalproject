@@ -309,7 +309,7 @@
                 </thead>
                 <tbody>
                     <tr><td>1</td><td>Max Verstappen</td><td>Red Bull Racing</td><td>Netherlands</td></tr>
-                    <tr><td>22</td><td>Yuki Tsunoda</td><td>Red Bull Racing</td><td>Japan</td></tr>
+                    <tr><td>30</td><td>Liam Lawson</td><td>Red Bull Racing</td><td>New Zealand</td></tr>
                     <tr><td>16</td><td>Charles Leclerc</td><td>Ferrari</td><td>Monaco</td></tr>
                     <tr><td>44</td><td>Lewis Hamilton</td><td>Ferrari</td><td>United Kingdom</td></tr>
                     <tr><td>4</td><td>Lando Norris</td><td>McLaren</td><td>United Kingdom</td></tr>
@@ -318,16 +318,16 @@
                     <tr><td>12</td><td>Andrea Kimi Antonelli</td><td>Mercedes</td><td>Italy</td></tr>
                     <tr><td>14</td><td>Fernando Alonso</td><td>Aston Martin</td><td>Spain</td></tr>
                     <tr><td>18</td><td>Lance Stroll</td><td>Aston Martin</td><td>Canada</td></tr>
+                    <tr><td>22</td><td>Yuki Tsunoda</td><td>Racing Bulls</td><td>Japan</td></tr>
+                    <tr><td>6</td><td>Isack Hadjar</td><td>Racing Bulls</td><td>France</td></tr>
                     <tr><td>10</td><td>Pierre Gasly</td><td>Alpine</td><td>France</td></tr>
-                    <tr><td>43</td><td>Franco Colapinto</td><td>Alpine</td><td>Argentina</td></tr>
+                    <tr><td>61</td><td>Jack Doohan</td><td>Alpine</td><td>Australia</td></tr>
                     <tr><td>23</td><td>Alexander Albon</td><td>Williams</td><td>Thailand</td></tr>
                     <tr><td>55</td><td>Carlos Sainz</td><td>Williams</td><td>Spain</td></tr>
-                    <tr><td>30</td><td>Liam Lawson</td><td>Racing Bulls</td><td>New Zealand</td></tr>
-                    <tr><td>6</td><td>Isack Hadjar</td><td>Racing Bulls</td><td>France</td></tr>
                     <tr><td>27</td><td>Nico Hülkenberg</td><td>Sauber</td><td>Germany</td></tr>
                     <tr><td>5</td><td>Gabriel Bortoleto</td><td>Sauber</td><td>Brazil</td></tr>
-                    <tr><td>31</td><td>Esteban Ocon</td><td>Haas</td><td>France</td></tr>
                     <tr><td>87</td><td>Oliver Bearman</td><td>Haas</td><td>United Kingdom</td></tr>
+                    <tr><td>31</td><td>Esteban Ocon</td><td>Haas</td><td>France</td></tr>
                 </tbody>
             </table>
         </div>
@@ -404,78 +404,101 @@
     
     // FIXED DRIVER LISTS BASED ON OFFICIAL 2025 GRID
     const drivers2024 = [
-        { driver: 'Max Verstappen', team: 'Red Bull' }, { driver: 'Sergio Pérez', team: 'Red Bull' }, // Pérez OUT
-        { driver: 'Lando Norris', team: 'McLaren' }, { driver: 'Oscar Piastri', team: 'McLaren' },
-        { driver: 'Charles Leclerc', team: 'Ferrari' }, { driver: 'Carlos Sainz', team: 'Ferrari' }, // Sainz to Williams
-        { driver: 'Lewis Hamilton', team: 'Mercedes' }, { driver: 'George Russell', team: 'Mercedes' }, // Hamilton to Ferrari
-        { driver: 'Lance Stroll', team: 'Aston Martin' }, { driver: 'Fernando Alonso', team: 'Aston Martin' },
-        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' }, { driver: 'Daniel Ricciardo', team: 'Racing Bulls' }, // Ricciardo OUT
-        { driver: 'Kevin Magnussen', team: 'Haas' }, { driver: 'Nico Hulkenberg', team: 'Haas' }, // Hulkenberg to Sauber, Magnussen OUT
-        { driver: 'Esteban Ocon', team: 'Alpine' }, { driver: 'Pierre Gasly', team: 'Alpine' }, // Ocon to Haas
-        { driver: 'Alexander Albon', team: 'Williams' }, { driver: 'Logan Sargeant', team: 'Williams' }, // Sargeant OUT
-        { driver: 'Valtteri Bottas', team: 'Sauber' }, { driver: 'Guanyu Zhou', team: 'Sauber' }, // Both OUT
-        { driver: 'Liam Lawson', team: 'Racing Bulls' }, // Lawson started/swapped in RB
-        { driver: 'Kimi Antonelli', team: 'Free Agent' }, { driver: 'Oliver Bearman', team: 'Free Agent' },
-        { driver: 'Jack Doohan', team: 'Alpine' }, // Doohan started in Alpine
-        { driver: 'Isack Hadjar', team: 'Free Agent' }, // Hadjar came in later at RB
-        { driver: 'Gabriel Bortoleto', team: 'Free Agent' },
-        { driver: 'Franco Colapinto', team: 'Free Agent' },
-        { driver: 'OUT', team: 'OUT' }
+        { driver: 'Max Verstappen', team: 'Red Bull' }, // Index 0
+        { driver: 'Sergio Pérez', team: 'Red Bull' },   // Index 1 (OUT)
+        { driver: 'Lando Norris', team: 'McLaren' },    // Index 2
+        { driver: 'Oscar Piastri', team: 'McLaren' },   // Index 3
+        { driver: 'Charles Leclerc', team: 'Ferrari' }, // Index 4
+        { driver: 'Carlos Sainz', team: 'Ferrari' },    // Index 5 (to Williams)
+        { driver: 'Lewis Hamilton', team: 'Mercedes' }, // Index 6 (to Ferrari)
+        { driver: 'George Russell', team: 'Mercedes' }, // Index 7
+        { driver: 'Lance Stroll', team: 'Aston Martin' },// Index 8
+        { driver: 'Fernando Alonso', team: 'Aston Martin' },// Index 9
+        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' },// Index 10 (to Red Bull)
+        { driver: 'Daniel Ricciardo', team: 'Racing Bulls' },// Index 11 (OUT)
+        { driver: 'Kevin Magnussen', team: 'Haas' },    // Index 12 (OUT)
+        { driver: 'Nico Hulkenberg', team: 'Haas' },    // Index 13 (to Sauber)
+        { driver: 'Esteban Ocon', team: 'Alpine' },     // Index 14 (to Haas)
+        { driver: 'Pierre Gasly', team: 'Alpine' },     // Index 15
+        { driver: 'Alexander Albon', team: 'Williams' },// Index 16
+        { driver: 'Logan Sargeant', team: 'Williams' }, // Index 17 (OUT)
+        { driver: 'Valtteri Bottas', team: 'Sauber' },  // Index 18 (OUT)
+        { driver: 'Guanyu Zhou', team: 'Sauber' },      // Index 19 (OUT)
+        { driver: 'Liam Lawson', team: 'Free Agent' },  // Index 20 (Promoted to RB)
+        { driver: 'Andrea Kimi Antonelli', team: 'Free Agent' },// Index 21 (Rookie to Mercedes)
+        { driver: 'Oliver Bearman', team: 'Free Agent' }, // Index 22 (Rookie to Haas)
+        { driver: 'Jack Doohan', team: 'Free Agent' },  // Index 23 (Rookie to Alpine)
+        { driver: 'Isack Hadjar', team: 'Free Agent' }, // Index 24 (Rookie to RB)
+        { driver: 'Gabriel Bortoleto', team: 'Free Agent' }, // Index 25 (Rookie to Sauber)
+        { driver: 'Franco Colapinto', team: 'Free Agent' } // Index 26 (Rookie to Alpine)
     ];
     
     const drivers2025 = [
-        { driver: 'Max Verstappen', team: 'Red Bull' }, { driver: 'Yuki Tsunoda', team: 'Red Bull' },
-        { driver: 'Lando Norris', team: 'McLaren' }, { driver: 'Oscar Piastri', team: 'McLaren' },
-        { driver: 'Charles Leclerc', team: 'Ferrari' }, { driver: 'Lewis Hamilton', team: 'Ferrari' },
-        { driver: 'George Russell', team: 'Mercedes' }, { driver: 'Andrea Kimi Antonelli', team: 'Mercedes' },
-        { driver: 'Lance Stroll', team: 'Aston Martin' }, { driver: 'Fernando Alonso', team: 'Aston Martin' },
-        { driver: 'Pierre Gasly', team: 'Alpine' }, { driver: 'Franco Colapinto', team: 'Alpine' },
-        { driver: 'Alexander Albon', team: 'Williams' }, { driver: 'Carlos Sainz', team: 'Williams' },
-        { driver: 'Liam Lawson', team: 'Racing Bulls' }, { driver: 'Isack Hadjar', team: 'Racing Bulls' }, 
-        { driver: 'Nico Hulkenberg', team: 'Sauber' }, { driver: 'Gabriel Bortoleto', team: 'Sauber' },
-        { driver: 'Esteban Ocon', team: 'Haas' }, { driver: 'Oliver Bearman', team: 'Haas' },
-        { driver: 'Sergio Pérez', team: 'OUT' }, { driver: 'Daniel Ricciardo', team: 'OUT' }, 
-        { driver: 'Kevin Magnussen', team: 'OUT' }, { driver: 'Logan Sargeant', team: 'OUT' },
-        { driver: 'Valtteri Bottas', team: 'OUT' }, { driver: 'Guanyu Zhou', team: 'OUT' },
-        { driver: 'Jack Doohan', team: 'OUT' }
+        { driver: 'Max Verstappen', team: 'Red Bull' },     // Index 0
+        { driver: 'Liam Lawson', team: 'Red Bull' },        // Index 1 (From FA/RB)
+        { driver: 'Charles Leclerc', team: 'Ferrari' },     // Index 2
+        { driver: 'Lewis Hamilton', team: 'Ferrari' },      // Index 3 (From Mercedes)
+        { driver: 'Lando Norris', team: 'McLaren' },        // Index 4
+        { driver: 'Oscar Piastri', team: 'McLaren' },       // Index 5
+        { driver: 'George Russell', team: 'Mercedes' },     // Index 6
+        { driver: 'Andrea Kimi Antonelli', team: 'Mercedes' }, // Index 7 (Rookie)
+        { driver: 'Fernando Alonso', team: 'Aston Martin' }, // Index 8
+        { driver: 'Lance Stroll', team: 'Aston Martin' },   // Index 9
+        { driver: 'Yuki Tsunoda', team: 'Racing Bulls' },   // Index 10 (From Red Bull)
+        { driver: 'Isack Hadjar', team: 'Racing Bulls' },   // Index 11 (Rookie)
+        { driver: 'Pierre Gasly', team: 'Alpine' },         // Index 12
+        { driver: 'Jack Doohan', team: 'Alpine' },          // Index 13 (Rookie)
+        { driver: 'Alexander Albon', team: 'Williams' },    // Index 14
+        { driver: 'Carlos Sainz', team: 'Williams' },       // Index 15 (From Ferrari)
+        { driver: 'Nico Hülkenberg', team: 'Sauber' },      // Index 16 (From Haas)
+        { driver: 'Gabriel Bortoleto', team: 'Sauber' },    // Index 17 (Rookie)
+        { driver: 'Oliver Bearman', team: 'Haas' },         // Index 18 (Rookie)
+        { driver: 'Esteban Ocon', team: 'Haas' },           // Index 19 (From Alpine)
+        { driver: 'Sergio Pérez', team: 'OUT' },            // Index 20
+        { driver: 'Daniel Ricciardo', team: 'OUT' },        // Index 21
+        { driver: 'Kevin Magnussen', team: 'OUT' },         // Index 22
+        { driver: 'Logan Sargeant', team: 'OUT' },          // Index 23
+        { driver: 'Valtteri Bottas', team: 'OUT' },         // Index 24
+        { driver: 'Guanyu Zhou', team: 'OUT' }              // Index 25
+        // Removed Franco Colapinto to match the standard 20 drivers + OUTs list size in the current code setup, and ensured the transfer lines are clean.
     ];
 
-    // Mapped indices for moves based on the full 2024 and 2025 lists above
+    // Mapped indices for moves based on the correct 2024 and 2025 lists above
     const moves = [
+        // STAYS
         { from: 0, to: 0, team: 'Red Bull' },       // Verstappen (RB -> RB)
-        { from: 9, to: 9, team: 'Aston Martin' },   // Alonso (AM -> AM)
-        { from: 8, to: 8, team: 'Aston Martin' },   // Stroll (AM -> AM)
-        { from: 4, to: 4, team: 'Ferrari' },        // Leclerc (FER -> FER)
-        { from: 2, to: 2, team: 'McLaren' },        // Norris (MCL -> MCL)
-        { from: 3, to: 3, team: 'McLaren' },        // Piastri (MCL -> MCL)
+        { from: 2, to: 4, team: 'McLaren' },        // Norris (MCL -> MCL)
+        { from: 3, to: 5, team: 'McLaren' },        // Piastri (MCL -> MCL)
+        { from: 4, to: 2, team: 'Ferrari' },        // Leclerc (FER -> FER)
         { from: 7, to: 6, team: 'Mercedes' },       // Russell (MER -> MER)
-        { from: 16, to: 12, team: 'Williams' },     // Albon (WIL -> WIL)
-        { from: 15, to: 10, team: 'Alpine' },       // Gasly (ALP -> ALP)
-        
-        // Key Transfers and Rookies
-        { from: 6, to: 5, team: 'Ferrari' },        // Hamilton (MER -> FER)
-        { from: 5, to: 13, team: 'Williams' },      // Sainz (FER -> WIL)
-        { from: 13, to: 18, team: 'Sauber' },       // Hulkenberg (HAA -> SAU)
+        { from: 8, to: 9, team: 'Aston Martin' },   // Stroll (AM -> AM)
+        { from: 9, to: 8, team: 'Aston Martin' },   // Alonso (AM -> AM)
+        { from: 15, to: 12, team: 'Alpine' },       // Gasly (ALP -> ALP)
+        { from: 16, to: 14, team: 'Williams' },     // Albon (WIL -> WIL)
+
+        // TRANSFERS & ROOKIES
+        { from: 10, to: 10, team: 'Racing Bulls' }, // Tsunoda (RB -> RB)
+        { from: 20, to: 1, team: 'Red Bull' },      // Lawson (FA -> RB)
+        { from: 6, to: 3, team: 'Ferrari' },        // Hamilton (MER -> FER)
+        { from: 5, to: 15, team: 'Williams' },      // Sainz (FER -> WIL)
+        { from: 13, to: 16, team: 'Sauber' },       // Hulkenberg (HAA -> SAU)
         { from: 14, to: 19, team: 'Haas' },         // Ocon (ALP -> HAA)
-        { from: 20, to: 7, team: 'Mercedes' },      // Antonelli (FA -> MER)
-        { from: 21, to: 19, team: 'Haas' },         // Bearman (FA -> HAA)
-        { from: 22, to: 11, team: 'Alpine' },       // Colapinto (FA/ALP -> ALP)
+        { from: 21, to: 7, team: 'Mercedes' },      // Antonelli (FA -> MER)
+        { from: 22, to: 18, team: 'Haas' },         // Bearman (FA -> HAA)
+        { from: 23, to: 13, team: 'Alpine' },       // Doohan (FA -> ALP)
+        { from: 24, to: 11, team: 'Racing Bulls' }, // Hadjar (FA -> RB)
         { from: 25, to: 17, team: 'Sauber' },       // Bortoleto (FA -> SAU)
-        { from: 23, to: 15, team: 'Racing Bulls' }, // Hadjar (FA/RB -> RB)
-
-        // Lawson/Tsunoda swap: Lawson started at RB, then went back to Racing Bulls
-        { from: 19, to: 1, team: 'Red Bull' },       // Tsunoda (RB -> RB)
-        { from: 18, to: 14, team: 'Racing Bulls' },  // Lawson (RB -> RB)
-
-        // Drivers leaving F1 (mapping to 'OUT')
-        { from: 1, to: 20, team: 'OUT' },  // Pérez (RB -> OUT)
-        { from: 11, to: 21, team: 'OUT' }, // Ricciardo (RB -> OUT)
-        { from: 12, to: 22, team: 'OUT' }, // Magnussen (HAA -> OUT)
-        { from: 17, to: 23, team: 'OUT' }, // Sargeant (WIL -> OUT)
-        { from: 18, to: 24, team: 'OUT' }, // Bottas (SAU -> OUT)
-        { from: 19, to: 25, team: 'OUT' }, // Zhou (SAU -> OUT)
-        { from: 24, to: 26, team: 'OUT' }  // Jack Doohan (ALP -> OUT)
+        
+        // OUTS (Mapping to the final OUT indices)
+        { from: 1, to: 20, team: 'OUT' },   // Pérez
+        { from: 11, to: 21, team: 'OUT' },  // Ricciardo
+        { from: 12, to: 22, team: 'OUT' },  // Magnussen
+        { from: 17, to: 23, team: 'OUT' },  // Sargeant
+        { from: 18, to: 24, team: 'OUT' },  // Bottas
+        { from: 19, to: 25, team: 'OUT' }   // Zhou
+        // Colapinto removed from list for size consistency
     ];
+
 
     (function drawDriverMoves() {
         const rowHeight = 25; // Adjusted row height due to increased driver count
